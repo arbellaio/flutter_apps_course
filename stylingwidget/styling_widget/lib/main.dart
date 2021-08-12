@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:styling_widget/question.dart';
-
+import 'package:styling_widget/answer.dart';
 void main() => runApp(HomePage());
 
 class HomePage extends StatefulWidget {
@@ -13,6 +13,14 @@ class HomePage extends StatefulWidget {
 // underscore infront of name makes it private
 class _HomePageState extends State<HomePage> {
   var _questionIndex = 0;
+
+  void _answerQuestion() {
+    setState(() {
+      _questionIndex += 1;
+    });
+    print("Answer $_questionIndex");
+  }
+
   @override
   Widget build(BuildContext context) {
     var questions = [
@@ -20,12 +28,7 @@ class _HomePageState extends State<HomePage> {
       "What is your favourite animal?",
       "What is your favourite vehicle?"
     ];
-    void _answerQuestion(int questionNo) {
-      print("Answer $questionNo");
-      setState(() {
-        _questionIndex += 1;
-      });
-    }
+
 
     return MaterialApp(
       home: Scaffold(
@@ -35,24 +38,9 @@ class _HomePageState extends State<HomePage> {
           body: Column(
             children: [
               Question(questions[_questionIndex],),
-              ElevatedButton(
-                child: Text('Answer 1'),
-                onPressed: () {
-                  _answerQuestion(1);
-                },
-              ),
-              ElevatedButton(
-                child: Text('Answer 2'),
-                onPressed: () {
-                  _answerQuestion(2);
-                },
-              ),
-              ElevatedButton(
-                child: Text('Answer 3'),
-                onPressed: () {
-                  _answerQuestion(3);
-                },
-              ),
+              Answer('Answer 1', _answerQuestion),
+              Answer('Answer 2', _answerQuestion),
+              Answer('Answer 3', _answerQuestion),
             ],
           )),
     );

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:maps_widget_example/answer.dart';
-import 'package:maps_widget_example/question.dart';
-
+import 'package:maps_widget_example/quiz.dart';
+import 'package:maps_widget_example/result.dart';
 
 void main() => runApp(HomePage());
 
@@ -12,11 +11,39 @@ class HomePage extends StatefulWidget {
   }
 }
 
-// underscore infront of name makes it private
+// underscore in front of name makes it private
 class _HomePageState extends State<HomePage> {
   var _questionIndex = 0;
+  var _totalScore = 0;
+  var _questions = [
+    {
+      'questionText': 'What is your favourite color?',
+      'answers': [
+        {'text': 'Red', 'score': 1},
+        {'text': 'Blue', 'score': 2},
+        {'text': 'Green', 'score': 3}
+      ],
+    },
+    {
+      'questionText': 'What is your favourite animal?',
+      'answers': [
+        {'text': 'Camel', 'score': 1},
+        {'text': 'Goat', 'score': 2},
+        {'text': 'Sheep', 'score': 3}
+      ],
+    },
+    {
+      'questionText': 'What is your favourite vehicle?',
+      'answers': [
+        {'text': 'Hyundai', 'score': 1},
+        {'text': 'Toyota', 'score': 2},
+        {'text': 'Honda', 'score': 3}
+      ],
+    }
+  ];
 
-  void _answerQuestion() {
+  void _answerQuestion(int score) {
+    _totalScore += score;
     setState(() {
       _questionIndex += 1;
     });
@@ -25,26 +52,26 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var questions = [
-      "What is your favourite color?",
-      "What is your favourite animal?",
-      "What is your favourite vehicle?"
-    ];
+    // _questions[_questionIndex]['questionText'] as String,
 
+    var scaffold = Scaffold(
+        appBar: AppBar(
+          title: Text('First App'),
+        ),
+        body: _questionIndex < _questions.length
+            ? Quiz(_answerQuestion, _questions, _questionIndex)
+            : Result(_totalScore, _resetQuiz));
 
     return MaterialApp(
-      home: Scaffold(
-          appBar: AppBar(
-            title: Text('First App'),
-          ),
-          body: Column(
-            children: [
-              Question(questions[_questionIndex],),
-              Answer('Answer 1', _answerQuestion),
-              Answer('Answer 2', _answerQuestion),
-              Answer('Answer 3', _answerQuestion),
-            ],
-          )),
+      home: scaffold,
     );
+  }
+
+  void _resetQuiz(){
+    setState(() {
+      _questionIndex =0;
+      _totalScore = 0;
+    });
+
   }
 }
